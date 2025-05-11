@@ -361,6 +361,21 @@
       }
     }
 
+    onAuthStateChanged(auth, user => {
+      if (user) {
+        // إذا كان المستخدم مسجل دخول مسبقًا
+        document.getElementById("login").style.display = "none";
+        document.getElementById("chat").style.display = "block";
+        currentUserName = user.displayName || "مستخدم مجهول"; // اسم المستخدم إذا كان متوفرًا
+        loadMessages(); // تحميل الرسائل
+      } else {
+        // إذا لم يكن المستخدم مسجل دخول
+        document.getElementById("login").style.display = "block";
+        document.getElementById("chat").style.display = "none";
+      }
+    });
+
+    // تسجيل الدخول
     loginBtn.addEventListener("click", () => {
       if (!username.value) return alert("يرجى إدخال اسم المستخدم");
       signInWithEmailAndPassword(auth, email.value, password.value)
@@ -371,6 +386,14 @@
           loadMessages();
         })
         .catch(err => alert("خطأ في تسجيل الدخول: " + err.message));
+    });
+
+    // تسجيل الخروج
+    logoutBtn.addEventListener("click", () => {
+      signOut(auth).then(() => {
+        document.getElementById("login").style.display = "block";
+        document.getElementById("chat").style.display = "none";
+      });
     });
 
     document.getElementById("msgInput").addEventListener("keypress", async (event) => {
@@ -398,13 +421,6 @@
       });
       document.getElementById("msgInput").value = "";
       showNotification("رسالة جديدة", `تم إرسال رسالتك: ${text}`);
-    });
-
-    logoutBtn.addEventListener("click", () => {
-      signOut(auth).then(() => {
-        document.getElementById("login").style.display = "block";
-        document.getElementById("chat").style.display = "none";
-      });
     });
 
     function loadMessages() {
@@ -479,15 +495,6 @@
         messagesDiv.scrollTop = messagesDiv.scrollHeight;
       });
     }
-
-    onAuthStateChanged(auth, user => {
-      if (user) {
-        document.getElementById("login").style.display = "none";
-        document.getElementById("chat").style.display = "block";
-        loadMessages();
-      }
-    });
   </script>
 </body>
 </html>
-``` 
