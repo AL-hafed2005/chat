@@ -94,6 +94,17 @@
       border-radius: 15px;
       flex: 1;
       position: relative;
+      font-size: 18px; /* نفس الخط الحالي */
+      display: flex;
+      justify-content: space-between; /* توزيع النص والوقت */
+      align-items: center; /* محاذاة النص والوقت عموديًا */
+    }
+
+    .msg .time {
+      font-size: 12px; /* حجم صغير للوقت */
+      color: white; /* اللون الأبيض للوقت */
+      margin-left: 10px; /* مسافة بين النص والوقت */
+      flex-shrink: 0; /* منع الوقت من التمدد */
     }
 
     .msg .emoji-container {
@@ -547,54 +558,18 @@
           // إنشاء محتوى الرسالة
           const content = document.createElement("div");
           content.className = "content";
-          const time = data.timestamp?.toDate().toLocaleTimeString("ar-EG") || "جارٍ...";
-          content.textContent = `${data.text} (${time})`;
+          content.textContent = data.text;
 
-          // عرض التفاعل المحفوظ (إن وجد)
-          if (data.reaction) {
-            const reaction = document.createElement("span");
-            reaction.className = "reaction";
-            reaction.textContent = data.reaction;
-            content.appendChild(reaction);
-          }
+          // إضافة الوقت
+          const time = document.createElement("span");
+          time.className = "time";
+          time.textContent = data.timestamp?.toDate().toLocaleTimeString("ar-EG", { hour: '2-digit', minute: '2-digit' }) || "جارٍ...";
 
-          // إنشاء قائمة الإيموجيات
-          const emojiContainer = document.createElement("div");
-          emojiContainer.className = "emoji-container";
-          const emojis = ["👍", "❤️", "😂", "😮", "😢", "👏"];
-          emojis.forEach(emoji => {
-            const emojiSpan = document.createElement("span");
-            emojiSpan.className = "emoji";
-            emojiSpan.textContent = emoji;
-            emojiSpan.addEventListener("click", async () => {
-              // تحديث التفاعل في قاعدة البيانات
-              await updateDoc(doc.ref, { reaction: emoji });
-
-              // عرض الإيموجي بجوار الرسالة
-              const reaction = document.createElement("span");
-              reaction.className = "reaction";
-              reaction.textContent = emoji;
-              content.appendChild(reaction);
-
-              // إخفاء قائمة الإيموجيات
-              emojiContainer.classList.remove("active");
-            });
-            emojiContainer.appendChild(emojiSpan);
-          });
-
-          // إضافة حدث الضغط المطول
-          div.addEventListener("mousedown", () => {
-            emojiContainer.classList.add("active");
-          });
-
-          div.addEventListener("mouseup", () => {
-            setTimeout(() => emojiContainer.classList.remove("active"), 3000); // إخفاء بعد 3 ثوانٍ
-          });
+          content.appendChild(time);
 
           // إضافة العناصر إلى الرسالة
           div.appendChild(avatar);
           div.appendChild(content);
-          div.appendChild(emojiContainer);
           messagesDiv.appendChild(div);
         });
         messagesDiv.scrollTop = messagesDiv.scrollHeight;
