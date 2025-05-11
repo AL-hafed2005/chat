@@ -2,7 +2,7 @@
 <html lang="ar">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=devic-width, initial-scale=1.0" />
   <title>دردشة طلاب الأقسام الداخلية</title>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
 
@@ -250,9 +250,14 @@
       background-color: #218838;
     }
 
+    #developer-info {
+      margin-top: 20px;
+      text-align: center;
+    }
+
     #developer-info img {
-      width: 100px;
-      height: 100px;
+      width: 150px;
+      height: 150px;
       border-radius: 50%;
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
     }
@@ -360,6 +365,32 @@
         top: 100%; /* عرض الإيموجيات أسفل الرسالة */
       }
     }
+
+    #contact {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      background-color: rgba(0, 0, 0, 0.8);
+      color: white;
+      padding: 20px;
+      box-sizing: border-box;
+      text-align: center;
+    }
+
+    #contact a {
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    #contact a:hover {
+      text-decoration: underline;
+    }
   </style>
 </head>
 <body>
@@ -370,16 +401,9 @@
     <input id="password" type="password" placeholder="كلمة المرور">
     <input id="username" placeholder="اسم المستخدم">
     <button id="loginBtn">دخول</button>
-
-    <!-- قسم معلومات المطور -->
-    <div id="developer-info" style="margin-top: 20px; text-align: center;">
-      <img src="https://c.top4top.io/p_3376tnxhf1.jpg" alt="صورة المطور" style="width: 200px; height: 200px; border-radius: 50%; margin-bottom: 10px;">
-      <p style="font-size: 14px; color: #fff;">تم تطوير هذا الموقع بواسطة <strong>عبدالرحمن عادل</strong></p>
-      <p style="font-size: 12px; color: #ddd;">هذا الموقع مخصص لطلاب الأقسام الداخلية لتسهيل التواصل بينهم.</p>
-    </div>
   </div>
 
-  <div id="chat">
+  <div id="chat" style="display:none;">
     <h3>💬 دردشة طلاب الأقسام الداخلية</h3>
     <div id="messages"></div>
     <div class="input-wrapper">
@@ -387,6 +411,22 @@
       <button id="sendBtn">إرسال</button>
     </div>
     <button id="logoutBtn">تسجيل الخروج</button>
+  </div>
+
+  <div id="contact" style="display:none;">
+    <h3>📞 اتصل بنا</h3>
+    <div id="developer-info" style="margin-top: 20px; text-align: center;">
+      <img src="https://c.top4top.io/p_3376tnxhf1.jpg" alt="صورة المطور" style="width: 150px; height: 150px; border-radius: 50%; margin-bottom: 10px;">
+      <p style="font-size: 16px; color: #fff;">تم تطوير هذا الموقع بواسطة <strong>عبدالرحمن عادل</strong></p>
+      <p style="font-size: 14px; color: #ddd;">📧 البريد الإلكتروني: <a href="b60996942@gmail.com" style="color: #4e54c8;">b60996942@gmail.com</a></p>
+      <p style="font-size: 14px; color: #ddd;">📱 رقم الهاتف: <a href="+9647729807659" style="color: #4e54c8;">+9647729807659</a></p>
+      <div style="margin-top: 10px;">
+        <a href="https://www.facebook.com/share/1E6c7zVuvD/" target="_blank" style="margin: 0 10px; color: #4e54c8;">فيسبوك</a>
+        <a href="https://www.instagram.com/8lm_w?igsh=eWY3dTZ6cTNvaXY3" target="_blank" style="margin: 0 10px; color: #4e54c8;">انستكرام</a>
+        
+      </div>
+    </div>
+    <button id="backBtn" style="margin-top: 20px; padding: 10px 20px; font-size: 16px; background-color: #dc3545; color: white; border: none; border-radius: 10px; cursor: pointer;">رجوع</button>
   </div>
 
   <script type="module">
@@ -560,6 +600,23 @@
         messagesDiv.scrollTop = messagesDiv.scrollHeight;
       });
     }
+
+    // زر لفتح واجهة "اتصل بنا"
+    const contactBtn = document.createElement("button");
+    contactBtn.textContent = "اتصل بنا";
+    contactBtn.style = "margin-top: 20px; padding: 10px 20px; font-size: 16px; background-color: #4e54c8; color: white; border: none; border-radius: 10px; cursor: pointer;";
+    document.body.appendChild(contactBtn);
+
+    contactBtn.addEventListener("click", () => {
+      document.getElementById("chat").style.display = "none";
+      document.getElementById("contact").style.display = "flex";
+    });
+
+    // زر الرجوع من واجهة "اتصل بنا"
+    document.getElementById("backBtn").addEventListener("click", () => {
+      document.getElementById("contact").style.display = "none";
+      document.getElementById("chat").style.display = "block";
+    });
   </script>
 </body>
 </html>
